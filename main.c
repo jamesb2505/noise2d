@@ -39,7 +39,9 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-    lodepng_encode32_file(outfile, data, w, h);
+	lodepng_encode32_file(outfile, data, w, h);
+	
+	free(data);
 
 	return 0;
 }
