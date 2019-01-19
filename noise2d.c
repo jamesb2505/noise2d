@@ -5,42 +5,18 @@ float interpolate(float a, float b, float w);
 float get_value(unsigned seed, int x, int y);
 unsigned hash(unsigned x);
 
-// int main(int argc, char *argv[]) {
-// 	unsigned seed = atoi(argv[1]);
-	
-// 	float x = 0.0, y = 0.0, step = atof(argv[2]);
-// 	for (int i = 0; i < 1024; i++) {
-// 		for (int j = 0; j < 160; j++) {
-// 			int p = 10 * noise2d(seed, x, y) / RAND_MAX;
-// 			p = (p < 10) ? p : 9;
-// 			putchar(p + '0');
-
-// 			// float p = noise2d(seed, x, y) / RAND_MAX;
-// 			// putchar(((p < 0.2) ? 32 : 
-// 			// 		 (p < 0.4) ? 176 :
-// 			// 		 (p < 0.6) ? 177 :
-// 			// 		 (p < 0.8) ? 178 : 219));
-// 			x += step;
-// 		}
-// 		putchar('\n');
-// 		y += step;
-// 		x = 0.0;
-// 	}
-
-// 	return 0;
-// }
-
 float noise2d(float x, float y, unsigned seed) {
 	int ix = (int)x, iy = (int)y;
 	float wx = x - (float)ix, wy = y - (float)iy;
-	
-	return interpolate(interpolate(get_value(seed, ix,   iy  ),
-    							   get_value(seed, ix+1, iy  ),
-    							   wx),
-    				   interpolate(get_value(seed, ix,   iy+1),
-    							   get_value(seed, ix+1, iy+1),
-    							   wx),
-    				   wy) / RAND_MAX;
+
+	float v00 = get_value(seed, ix, iy),
+		v10 = get_value(seed, ix + 1, iy),
+		v01 = get_value(seed, ix, iy + 1),
+		v11 = get_value(seed, ix + 1, iy + 1);
+
+	float v00_10 = interpolate(v00, v10, wx), v01_11 = interpolate(v01, v11, wx);
+
+	return interpolate(v00_10, v01_11, wy) / RAND_MAX;
 }
 
 float perlin2d(float x, float y, unsigned seed, int iters, float persistence) { 
