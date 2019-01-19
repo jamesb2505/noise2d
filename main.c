@@ -28,10 +28,10 @@ int main(int argc, char *argv[]) {
 	}
 
 	float x = xs, y = ys;
-	for (int i = 0; i < w; i++, y+=st, x=xs) {
-		for (int j = 0; j < h; j++, x+=st) {
+	for (int j = 0; j < h; j++, y+=st, x=xs) {
+		for (int i = 0; i < w; i++, x+=st) {
 			float value = perlin2d(x, y, seed, iters, pers);
-			int index = 4 * (i * w + j);
+			int index = 4 * (j * w + i);
 			for (int c = 0; c < 3; c++) {
 				data[index + c] = 256 * value;
 			}
